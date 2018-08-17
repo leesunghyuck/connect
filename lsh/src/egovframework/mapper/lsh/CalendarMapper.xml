@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lsh.mapper.CalendarMapper">
+
+	<resultMap type="lsh.service.CalendarVO" id="resultMap-CalendarVO">
+		<result property="seq" column="SEQ" />
+		<result property="title" column="TITLE" />
+		<result property="place" column="PLACE" />
+		<result property="content" column="CONTENT" />
+		<result property="category" column="CATEGORY" />
+		<result property="startYear" column="START_YEAR" />
+		<result property="startMonth" column="START_MONTH" />
+		<result property="startDay" column="START_DAY" />
+		<result property="endYear" column="END_YEAR" />
+		<result property="endMonth" column="END_MONTH" />
+		<result property="endDay" column="END_DAY" />
+		<result property="leng" column="LENG" />
+		<result property="end" column="END" />
+	</resultMap>
+
+	<select id="getCalAllList" resultType="lsh.service.CalendarVO" resultMap="resultMap-CalendarVO">
+		SELECT
+			SEQ
+			,TITLE
+			,PLACE
+			,CONTENT
+			,CATEGORY
+			,START_YEAR
+			,START_MONTH
+			,START_DAY
+			,END_YEAR
+			,END_MONTH
+			,END_DAY
+			,LENG
+			,END
+		FROM
+			LSH_CALENDAR
+		ORDER BY SEQ ASC
+	</select>
+
+	<select id="getCalList" parameterType="Integer" resultType="lsh.service.CalendarVO" resultMap="resultMap-CalendarVO">
+		SELECT
+			SEQ
+			,TITLE
+			,PLACE
+			,CONTENT
+			,CATEGORY
+			,START_YEAR
+			,START_MONTH
+			,START_DAY
+			,END_YEAR
+			,END_MONTH
+			,END_DAY
+			,LENG
+			,END
+		FROM LSH_CALENDAR WHERE SEQ = #{seq}
+	</select>
+
+	<insert id="insertCalendar" parameterType="lsh.service.CalendarVO">
+		INSERT INTO
+			LSH_CALENDAR
+		VALUES(
+			(nvl((SELECT MAX(seq) FROM LSH_CALENDAR) + 1, 1))
+			,#{title}
+			,#{place}
+			,#{content}
+			,#{category}
+			,#{startYear}
+			,#{startMonth}
+			,#{startDay}
+			,#{endYear}
+			,#{endMonth}
+			,#{endDay}
+			,#{leng}
+			,#{end}
+		)
+	</insert>
+</mapper>
