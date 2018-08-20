@@ -13,19 +13,6 @@ public class test {
 		String end = "2015-05-05";
 
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			Date startDate =  fmt.parse(start);
-			Date endDate =  fmt.parse(end);
 
-			long diff= endDate.getTime() - startDate.getTime();
-			long diffday = diff / (24*60*60*1000);
-
-			System.out.println(diffday);
-
-
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
