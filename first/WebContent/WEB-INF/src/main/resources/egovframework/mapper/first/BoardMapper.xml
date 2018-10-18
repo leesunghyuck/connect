@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="study.service.BoardDao">
+
+	<resultMap type="study.service.BoardVO" id="resultMap-BoardVO">
+		<result property="rn" column="RN" />
+		<result property="seq" column="SEQ" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="createName" column="CREATE_NAME" />
+		<result property="createDate" column="CREATE_DATE" javaType="date" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="getBoardList" resultType="study.service.BoardVO" resultMap="resultMap-BoardVO">
+		SELECT
+			R.*
+		FROM
+		(
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY SEQ ASC) AS RN,
+				ROW_NUMBER() OVER (ORDER BY SEQ DESC) AS NUM,
+				ALL_LIST.*
+			FROM
+			(
+				SELECT
+					SEQ
+					,TITLE
+					,CONTENT
+					,CREATE_NAME
+					,CREATE_DATE
+				FROM
+					LSH_BOARD
+			) ALL_LIST
+		) R
+		WHERE NUM <![CDATA[ >= ]]> 1 AND NUM <![CDATA[ <= ]]> 10
+		ORDER BY RN DESC
+	</select>
+
+	<select id="getViewList" resultType="study.service.BoardVO" resultMap="resultMap-BoardVO">
+		SELECT
+			SEQ
+			,TITLE
+			,CONTENT
+			,CREATE_NAME
+			,CREATE_DATE
+		FROM
+			LSH_BOARD
+		WHERE SEQ = #{seq}
+	</select>
+
+	<select id="totalCount" resultType="Integer">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM
+			LSH_BOARD
+	</select>
+
+	<insert id="boardInsert" parameterType="study.service.BoardVO" >
+		INSERT INTO LSH_BOARD VALUES(
+			(nvl((SELECT MAX(seq) FROM LSH_BOARD) + 1, 1)),
+			#{title},
+			#{content},
+			#{createName},
+			SYSDATE
+		)
+	</insert>
+
+	<delete id="boardDelete" parameterType="String">
+		DELETE FROM LSH_BOARD
+		WHERE SEQ = #{seq}
+	</delete>
+
+</mapper>
