@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PostMapper">
+
+	<resultMap type="org.spring.my.domain.Post" id="PostResultMap">
+		<id column="idx" property="idx"/>
+		<result column="create_at" property="createAt"/>
+		<association property="author" column="author_idx" javaType="User">
+			<id column="author_idx" property="idx"/>
+			<result column="author_email" property="email"/>
+			<result column="author_name" property="name"/>
+		</association>
+	</resultMap>
+
+	<select id="selectAllPost" resultMap="PostResultMap">
+		SELECT
+			P.*
+			,U.EMAIL AS AUTHOR_EMAIL
+			,U.NAME AS AUTHOR_NAME
+		FROM POST P, USER U
+		WHERE P.AUTHOR_IDX = U.IDX
+	</select>
+	
+	<resultMap type="org.spring.my.domain.UserPost" id="UserPostResultMap">
+		<id column="idx" property="idx"/>
+		<result column="create_at" property="createAt"/>
+		<collection property="posts" javaType="org.spring.my.domain.Post">
+			<result column="idx" property="idx"/>
+			<result column="title" property="title"/>
+			<result column="content" property="content"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectAllUserPost" resultMap="UserPostResultMap">
+		SELECT
+			U.*
+			,P.*
+		FROM USER U, POST P
+		WHERE U.idx = P.AUTHOR_IDX
+	</select>
+	
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SignMapper">
+
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="idx">
+		INSERT INTO USER (
+			EMAIL
+			,PASSWORD
+			,NAME
+		) VALUES(
+			#{email}
+			,#{password}
+			,#{name}
+		)
+	</insert>
+	
+	<select id="selectUserByIdPw" resultType="org.spring.my.domain.User">
+		SELECT
+			IDX
+			,EMAIL
+			,PASSWORD
+			,NAME
+			,CREATE_AT
+		FROM USER
+		WHERE EMAIL = #{email}
+		AND PASSWORD = #{password}
+	</select>
+	
+	<insert id="insertAutoSign">
+		INSERT INTO AUTOSIGN (
+			USER_IDX
+			,TOKEN
+		) VALUES (
+			#{userIdx}
+			,#{token}
+		)
+	</insert>
+	
+	<select id="selectAutoSign" resultType="org.spring.my.domain.Autosign">
+		SELECT
+			*
+		FROM AUTOSIGN
+		WHERE TOKEN = #{token}
+	</select>
+	
+	<insert id="insertUserPoint">
+		INSERT INTO USERPOINT(
+			USER_IDX
+			,POINT
+		) VALUES (
+			#{user_idx}
+			,#{point}
+		)
+	</insert>
+	
+</mapper>

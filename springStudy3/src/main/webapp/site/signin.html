@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../../../favicon.ico"> -->
+
+    <title>Sign In</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/signin.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <div class="form-signin">
+      <h1 class="h4 mb-3 font-weight-normal" style="color:white;">로그인</h1>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <div class="checkbox mb-3">
+        <label style="color:white;">
+          <input id="inputRemember" type="checkbox" value="remember-me"> 자동 로그인
+        </label>
+      </div>
+      <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block">로그인</button>
+      <button id="buttonSignUp" class="btn btn-lg btn-success btn-block">회원가입</button>
+    </div>
+  </body>
+    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
+  <script>
+  
+  	$(document).ready(function(){
+  		$("#buttonSignIn").click(onSubmit);
+  		$("#buttonSignUp").click(function(){ location.href = "/site/signup.html" });
+  	});
+  	
+  	function onSubmit() {
+  		var email = $("#inputEmail").val();
+  		var password = $("#inputPassword").val();
+  		
+  		$.post( "/sign/in", { 
+			"email": email, 
+			"password": password 
+  		}).done(function( result ) {
+  			if( result.succ ){
+  				location.href = "/site/index.html";
+  			} else {
+  				alert( "로그인 실패" );
+  			}
+  		})
+  		.fail(function(e) {
+  			console.log(e);
+  			alert( "로그인 오류" );
+		});
+  	}
+  
+  </script>
+</html>
